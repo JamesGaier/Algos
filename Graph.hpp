@@ -118,51 +118,6 @@ public:
        return result;
     }
 
-    std::vector<Edge> prims()
-    {
-        std::list<Edge> edges(m_edges.begin(), m_edges.end());
-        std::vector<Edge> MST;
-        std::set<int> visited;
-
-       Edge currentEdge = edges.front();
-       visited.insert(currentEdge.src);
-
-       while(visited.size() != N)
-       {
-            auto curNeighbors = neighbors(edges, currentEdge.src);
-            for(const auto &edge : curNeighbors)
-            {
-               if(visited.count(edge.dest) == 0)
-               {
-                    
-               }
-            }
-       }
-       return MST;
-    }
-
-    std::vector<Edge> neighbors(std::list<Edge> edges, int vertex)
-    {
-        std::vector<Edge> neighbors; 
-        
-        for(const auto &edge : edges)
-        {
-           if(edge.src == vertex)
-           {
-                neighbors.push_back(edge);
-           }
-        }
-
-        std::sort(neighbors.begin(), neighbors.end(),
-        [] (const Edge &lhs, const Edge &rhs)
-        {
-            return lhs.weight < rhs.weight;
-        });
-
-
-        return neighbors;
-    }
-
     void print() override
     {
         for(size_t i = 0; i < m_matrix.size(); ++i)

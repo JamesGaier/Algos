@@ -1,4 +1,3 @@
-#include "Kruskal.hpp"
 #include "Graph.hpp"
 
 /*
@@ -37,8 +36,4 @@ int main()
     G.print();
 
     printMST(G.kurskal());
-
-    printMST(G.prims());
-
-    G.print();
 }
