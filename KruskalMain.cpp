@@ -36,4 +36,7 @@ int main()
     G.print();
 
     printMST(G.kurskal());
+    G.breadthFirstSearch(2, 1);
+    std::cout <<  std::endl << "Depth first" << std::endl;
+    G.depthFirstSearch(2, 1);
 }

@@ -6,6 +6,8 @@
 #include <list>
 #include <memory>
 #include <algorithm>
+#include <queue>
+#include <stack>
 #include "Printable.hpp"
 #include "DisjointSet.hpp"
 
@@ -45,10 +47,14 @@ public:
         m_matrix[src][dest] = weight; 
         m_matrix[dest][src] = weight; 
 
+        // adding the edge twice makes it undirected.  If the edge is added once then the graph is directed.
         Edge edge;
         edge.weight = weight;
         edge.src = src;
         edge.dest = dest;
+        m_edges.push_back(edge);
+        edge.src = dest;
+        edge.dest = src;
         m_edges.push_back(edge);
     }
 
@@ -116,6 +122,80 @@ public:
        }
 
        return result;
+    }
+
+    std::vector<Edge> getNeighbors(int vertex)
+    {
+        std::vector<Edge> neighbors;
+        for(const auto &edge : m_edges)
+        {
+           if(edge.src == vertex)
+           {
+                neighbors.push_back(edge);
+           }
+        }
+
+        return neighbors;
+    }
+
+    void breadthFirstSearch(int root, int dest)
+    {
+        std::queue<int> nodes;
+        std::array<bool, N> visited;
+        nodes.emplace(root);
+        while(!nodes.empty())
+        {
+            int current = nodes.front();
+            std::cout << "visted " << current << std::endl;
+            nodes.pop();
+            if(current == dest)
+            {
+                std::cout << "At destination node" << std::endl;
+                break;
+            }
+
+            auto neighbors = getNeighbors(current);
+            
+            for(const auto &edge : neighbors)
+            {
+                if(!visited[edge.dest])
+                {
+                    std::cout << "Adding neighbor: " << edge.dest << std::endl;
+                    visited[edge.dest] = true;
+                    nodes.emplace(edge.dest);
+                }
+            }
+        }
+    }
+
+    void depthFirstSearch(int root, int dest)
+    {
+        std::stack<int> nodes;
+        std::array<bool, N> visited;
+        nodes.emplace(root);
+        while(!nodes.empty())
+        {
+            auto current = nodes.top();
+            std::cout << "visted " << current << std::endl;
+            nodes.pop();
+            if(current == dest)
+            {
+                std::cout << "At destination node" << std::endl;
+                break;
+            }
+
+            auto neighbors = getNeighbors(current);
+            
+            for(const auto &edge : neighbors)
+            {
+                if(!visited[edge.dest])
+                {
+                    std::cout << "Adding neighbor: " << edge.dest << std::endl;
+                    visited[edge.dest] = true;
+                    nodes.emplace(edge.dest);
+                }
+            }
+        }
     }
 
     void print() override
